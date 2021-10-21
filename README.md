@@ -52,3 +52,5 @@ Some timers
 
 ![image](https://user-images.githubusercontent.com/4686986/138283407-ac70b388-27b7-454d-8d01-50715bece6ef.png)
 
+## Security implications
+There is no authentication nor any security check on the provided command / message, therefore this process should **NOT** be exposed to any non-local and secure network (home network for example). In the future there will be both a key system for the API and a message sanity check.
