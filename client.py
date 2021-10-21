@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import requests
 import argparse
 import json
@@ -73,7 +75,10 @@ def pretty_print_short(req):
   to_print = [
     "[{}]".format(get_time_diff(v['time_now'], v['end_time'])) for v in req.values()
   ]
-  print("".join(to_print))
+  if to_print:
+    print("".join(to_print))
+  else:
+    print("[No Timer]")
 
 def pretty_print_long(req):
   to_print = [
