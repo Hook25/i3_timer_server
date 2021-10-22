@@ -39,7 +39,7 @@ def delete_timer(conf):
    if all(x == 200 for x in res):
      print("Success")
    else:
-     print("Failed to delete:", ", ".join(i for (i, r) in zip(conf.additional, res) if res != 200)) 
+     print("Failed to delete:", ", ".join("({}, code: {})".format(i, r) for (i, r) in zip(conf.additional, res) if res != 200)) 
 
 def to_t(s):
   s = list(reversed(s.split(":")))
@@ -93,16 +93,19 @@ def pretty_print_long(req):
 
 def main():
   conf = load_config()
-  if conf.action == 'show_brief':
-    active = update_active(conf)
-    pretty_print_short(active)
-  elif conf.action == 'show_detail':
-    active = update_active(conf)
-    pretty_print_long(active)
-  elif conf.action == 'delete':
-    delete_timer(conf)
-  elif conf.action == 'post_new':
-    create_timer(conf)
+  try:
+    if conf.action == 'show_brief':
+      active = update_active(conf)
+      pretty_print_short(active)
+    elif conf.action == 'show_detail':
+      active = update_active(conf)
+      pretty_print_long(active)
+    elif conf.action == 'delete':
+      delete_timer(conf)
+    elif conf.action == 'post_new':
+      create_timer(conf)
+  except requests.exceptions.ConnectionError:
+    print("[Server Connection Error]")
 
 if __name__ == "__main__":
   main()
