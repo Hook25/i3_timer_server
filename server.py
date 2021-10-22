@@ -14,6 +14,8 @@ api = Flask(__name__)
 started_timers = {}
 started_timers_lock = Lock()
 
+KEY_LEN = 5 #prob of collision is 1/KEY_LEN due to hash uniformity
+
 config = None #gets set by load_config
 
 def get_timers(request):
@@ -68,7 +70,7 @@ def del_timers(request):
   started_timers_lock.release()
   if err:
     abort(404)
-  return to_r
+  return "200"
 
 @api.route('/timers', methods=['GET', 'POST', 'DELETE'])
 def timers():
@@ -92,7 +94,7 @@ class TimerSpec:
   def get_id(self):
     m = hashlib.sha256()
     m.update("{}{}{}".format(self.message, self.start_time, self.time_span).encode())
-    return m.hexdigest()
+    return m.hexdigest()[:KEY_LEN]
   def _runner(self, t, msg, cmd):
     e = Event()
     e.wait(t)
