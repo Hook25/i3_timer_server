@@ -96,9 +96,10 @@ class TimerSpec:
     m.update("{}{}{}".format(self.message, self.start_time, self.time_span).encode())
     return m.hexdigest()[:KEY_LEN]
   def _runner(self, t, msg, cmd):
+    from shlex import quote
     e = Event()
     e.wait(t)
-    system(cmd.format(msg))
+    system(cmd.format(quote(msg)))
   def start_spec(self):
     p = Process(
       target = self._runner, args=(float(self.time_span), self.message, self.cmd)
